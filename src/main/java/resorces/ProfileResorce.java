@@ -12,38 +12,39 @@ public class ProfileResorce {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProfiles() {
-        String dummyResponse = "{ \"success\": true, \"data\": [\n" +
-                "    {\n" +
-                "      \"id\": 1731095302112,\n" +
-                "      \"name\": \"max_mustermann\",\n" +
-                "      \"displayname\": \"Max Mustermann\",\n" +
-                "      \"contact\": [\n" +
-                "        {\n" +
-                "          \"displayname\": \"E-Mail\",\n" +
-                "          \"value\": \"max.mustermann@example.com\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"displayname\": \"Phone\",\n" +
-                "          \"value\": \"+49 1568 483234\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": 1099871596193,\n" +
-                "      \"name\": \"phro\",\n" +
-                "      \"displayname\": \"Dr. Philipp Rohde\",\n" +
-                "      \"contact\": [\n" +
-                "        {\n" +
-                "          \"displayname\": \"E-Mail\",\n" +
-                "          \"value\": \"rhode@fh-aachen.com\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"displayname\": \"Discord\",\n" +
-                "          \"value\": \"phro#3865\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ] }";
+        String dummyResponse = """
+                { "success": true, "data": [
+                    {
+                      "id": 1731095302112,
+                      "name": "max_mustermann",
+                      "displayname": "Max Mustermann",
+                      "contact": [
+                        {
+                          "displayname": "E-Mail",
+                          "value": "max.mustermann@example.com"
+                        },
+                        {
+                          "displayname": "Phone",
+                          "value": "+49 1568 483234"
+                        }
+                      ]
+                    },
+                    {
+                      "id": 1099871596193,
+                      "name": "phro",
+                      "displayname": "Dr. Philipp Rohde",
+                      "contact": [
+                        {
+                          "displayname": "E-Mail",
+                          "value": "rhode@fh-aachen.com"
+                        },
+                        {
+                          "displayname": "Discord",
+                          "value": "phro#3865"
+                        }
+                      ]
+                    }
+                  ] }""";
         return Response.ok(dummyResponse).build();
     }
 
@@ -52,33 +53,35 @@ public class ProfileResorce {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProfileById(@PathParam("id") String id) {
         String dummyResponse;
-        if (id.equals("1731095302112")) {dummyResponse = "{\n" +
-                "  \"success\": true,\n" +
-                "  \"data\": {\n" +
-                "    \"id\": 1731095302112,\n" +
-                "    \"name\": \"max_mustermann\",\n" +
-                "    \"displayname\": \"Max Mustermann\",\n" +
-                "    \"contact\": [\n" +
-                "      {\n" +
-                "        \"displayname\": \"E-Mail\",\n" +
-                "        \"value\": \"max.mustermann@example.com\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"displayname\": \"Phone\",\n" +
-                "        \"value\": \"+49 1568 483234\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "}";
+        if (id.equals("1731095302112")) {dummyResponse = """
+                {
+                  "success": true,
+                  "data": {
+                    "id": 1731095302112,
+                    "name": "max_mustermann",
+                    "displayname": "Max Mustermann",
+                    "contact": [
+                      {
+                        "displayname": "E-Mail",
+                        "value": "max.mustermann@example.com"
+                      },
+                      {
+                        "displayname": "Phone",
+                        "value": "+49 1568 483234"
+                      }
+                    ]
+                  }
+                }""";
             return Response.status(Response.Status.OK).entity(dummyResponse).build();
         }
-        else { dummyResponse = "{{\n" +
-                "  \"success\": false,\n" +
-                "  \"error\": {\n" +
-                "    \"code\": 404,\n" +
-                "    \"message_key\": \"account.notfound\"\n" +
-                "  }\n" +
-                "}";
+        else { dummyResponse = """
+                {{
+                  "success": false,
+                  "error": {
+                    "code": 404,
+                    "message_key": "account.notfound"
+                  }
+                }""";
         }
         return Response.status(Response.Status.NOT_FOUND).entity(dummyResponse).build();
     }
@@ -93,64 +96,70 @@ public class ProfileResorce {
     {
         if (id == 1)
         {
-            String dummyResponse = "{\n" +
-                    "  \"success\": true,\n" +
-                    "  \"data\": {\n" +
-                    "    \"id\": 1731095302112\n" +
-                    "  }\n" +
-                    "}";
+            String dummyResponse = """
+                    {
+                      "success": true,
+                      "data": {
+                        "id": 1731095302112
+                      }
+                    }""";
             return Response.status(Response.Status.OK).entity(dummyResponse).build();
         }
         if (id == 2)
         {
-            String dummyResponse = "{\n" +
-                    "  \"success\": true,\n" +
-                    "  \"data\": {\n" +
-                    "    \"id\": 1731095302112\n" +
-                    "  }\n" +
-                    "}";
+            String dummyResponse = """
+                    {
+                      "success": true,
+                      "data": {
+                        "id": 1731095302112
+                      }
+                    }""";
             return Response.status(Response.Status.CREATED).entity(dummyResponse).build();
         }
         if (id == 3)
         {
-            String dummyResponse = "{\n" +
-                    "  \"success\": false,\n" +
-                    "  \"error\": {\n" +
-                    "    \"code\": 400,\n" +
-                    "    \"message_key\": \"request.missingarguments\"\n" +
-                    "  }\n" +
-                    "}";
+            String dummyResponse = """
+                    {
+                      "success": false,
+                      "error": {
+                        "code": 400,
+                        "message_key": "request.missingarguments"
+                      }
+                    }""";
             return Response.status(Response.Status.BAD_REQUEST).entity(dummyResponse).build();
         }
         if (id == 4)
         {
-            String dummyResponse = "{\n" +
-                    "  \"success\": false,\n" +
-                    "  \"error\": {\n" +
-                    "    \"code\": 401,\n" +
-                    "    \"message_key\": \"authorization.failed\"\n" +
-                    "  }\n" +
-                    "}";
+            String dummyResponse = """
+                    {
+                      "success": false,
+                      "error": {
+                        "code": 401,
+                        "message_key": "authorization.failed"
+                      }
+                    }""";
             return Response.status(Response.Status.UNAUTHORIZED).entity(dummyResponse).build();
         }
         if (id == 5)
         {
-           String dummyResponse = "{\n" +
-                   "  \"success\": false,\n" +
-                   "  \"error\": {\n" +
-                   "    \"code\": 403,\n" +
-                   "    \"message_key\": \"user.exists\"\n" +
-                   "  }\n" +
-                   "}";
+           String dummyResponse = """
+                   {
+                     "success": false,
+                     "error": {
+                       "code": 403,
+                       "message_key": "user.exists"
+                     }
+                   }""";
            return Response.status(Response.Status.FORBIDDEN).entity(dummyResponse).build();
         }
-        String dummyResonse = "{\n" +
-                "  \"success\": false,\n" +
-                "  \"error\": {\n" +
-                "    \"code\": 409,\n" +
-                "    \"message_key\": \"account.exists\"\n" +
-                "  }\n" +
-                "}";
+        String dummyResonse = """
+                {
+                  "success": false,
+                  "error": {
+                    "code": 409,
+                    "message_key": "account.exists"
+                  }
+                }""";
         return Response.status(Response.Status.CONFLICT).entity(dummyResonse).build();
     }
 
@@ -160,21 +169,23 @@ public class ProfileResorce {
     public Response deleteProfile(@PathParam("id") String id) {
         String dummyResponse ;
         if (id.equals("1731095302112")) {
-            dummyResponse = "{\n" +
-                "  \"success\": true,\n" +
-                "  \"data\": null\n" +
-                "}";
+            dummyResponse = """
+                    {
+                      "success": true,
+                      "data": null
+                    }""";
             return Response.status(Response.Status.ACCEPTED).entity(dummyResponse).build();
         }
         else
         {
-            dummyResponse = "{\n" +
-                    "  \"success\": false,\n" +
-                    "  \"error\": {\n" +
-                    "    \"code\": 401,\n" +
-                    "    \"message_key\": \"authorization.failed\"\n" +
-                    "  }\n" +
-                    "}";
+            dummyResponse = """
+                    {
+                      "success": false,
+                      "error": {
+                        "code": 401,
+                        "message_key": "authorization.failed"
+                      }
+                    }""";
         }
         return Response.status(Response.Status.UNAUTHORIZED).entity(dummyResponse).build();
     }
