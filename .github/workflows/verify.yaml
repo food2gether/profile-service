@@ -15,7 +15,7 @@ jobs:
       test_artifact_name: 'quarkus-test-results'
   scan:
     needs: test
-    if: 'github.event_name == "pull_request" || (github.event_name == "push" && github.ref == "refs/heads/main")'
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     uses: food2gether/workflows/.github/workflows/backend-scan.yaml@main
     with:
       java_version: '17'
