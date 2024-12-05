@@ -1,0 +1,16 @@
+name: 'Publish Docker Image'
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  packages: write
+
+jobs:
+  publish:
+    uses: food2gether/workflows/backend/publish.yaml
+    with:
+      java_version: '17'
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      version: ${{ github.event.release.tag_name }}

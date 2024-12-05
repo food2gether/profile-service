@@ -1,0 +1,27 @@
+name: Verify & Test
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test:
+    uses: food2gether/workflows/backend/test.yaml
+    with:
+      java_version: '17'
+      test_artifact_name: 'quarkus-test-results'
+  scan:
+    needs: test
+    if: 'github.event_name == "pull_request" || (github.event_name == "push" && github.ref == "refs/heads/main")'
+    uses: food2gether/workflows/backend/scan.yaml
+    with:
+      java_version: '17'
+      test_artifact_name: 'quarkus-test-results'
+      sonar_organization: 'food2gether'
+      sonar_host: 'https://sonarcloud.io'
+      sonar_project_key: 'food2gether_profile-service'
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      github_token: ${{ secrets.GITHUB_TOKEN }}
