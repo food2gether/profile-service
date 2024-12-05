@@ -23,5 +23,5 @@ jobs:
       sonar_organization: 'food2gether'
       sonar_host: 'https://sonarcloud.io'
       sonar_project_key: 'food2gether_profile-service'
-      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      sonar_token: '${{ secrets.SONAR_TOKEN }}'
       github_token: ${{ secrets.GITHUB_TOKEN }}
