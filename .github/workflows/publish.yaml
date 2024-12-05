@@ -12,5 +12,6 @@ jobs:
     uses: food2gether/workflows/.github/workflows/backend-publish.yaml@main
     with:
       java_version: '17'
-      github_token: ${{ secrets.GITHUB_TOKEN }}
       version: ${{ github.event.release.tag_name }}
+    secrets:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
