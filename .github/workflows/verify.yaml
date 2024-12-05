@@ -9,14 +9,14 @@ on:
 
 jobs:
   test:
-    uses: food2gether/workflows/backend/test.yaml
+    uses: food2gether/workflows/backend/test.yaml@main
     with:
       java_version: '17'
       test_artifact_name: 'quarkus-test-results'
   scan:
     needs: test
     if: 'github.event_name == "pull_request" || (github.event_name == "push" && github.ref == "refs/heads/main")'
-    uses: food2gether/workflows/backend/scan.yaml
+    uses: food2gether/workflows/backend/scan.yaml@main
     with:
       java_version: '17'
       test_artifact_name: 'quarkus-test-results'

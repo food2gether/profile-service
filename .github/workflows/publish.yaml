@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   publish:
-    uses: food2gether/workflows/backend/publish.yaml
+    uses: food2gether/workflows/backend/publish.yaml@main
     with:
       java_version: '17'
       github_token: ${{ secrets.GITHUB_TOKEN }}
