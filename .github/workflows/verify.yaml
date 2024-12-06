@@ -8,26 +8,18 @@ on:
     types: [opened, synchronize, reopened]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}- ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  test-jvm:
     uses: food2gether/workflows/.github/workflows/backend-test.yaml@main
+    if: ${{ github.event_name == 'push' }}
     with:
       java_version: '17'
-      test_artifact_name: 'quarkus-test-results'
-      run_native: ${{ github.event_name == 'pull_request' }}
-  scan:
-    needs: test
-    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
-    uses: food2gether/workflows/.github/workflows/backend-scan.yaml@main
+  test-native:
+    uses: food2gether/workflows/.github/workflows/backend-test.yaml@main
+    if: ${{ github.event_name == 'pull_request' }}
     with:
       java_version: '17'
-      test_artifact_name: 'quarkus-test-results'
-      sonar_organization: 'food2gether'
-      sonar_host: 'https://sonarcloud.io'
-      sonar_project_key: 'food2gether_profile-service'
-    secrets:
-      sonar_token: '${{ secrets.SONAR_TOKEN }}'
-      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      profile: native
