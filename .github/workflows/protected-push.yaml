@@ -14,6 +14,10 @@ jobs:
     with:
       java_version: '17'
       profile: native
+  test-jvm:
+    uses: food2gether/workflows/.github/workflows/backend-test.yaml@main
+    with:
+      java_version: '17'
       test_results_artifact_key: test-results
   sonar:
     needs: test-native
@@ -22,9 +26,6 @@ jobs:
       java_version: '17'
       test_results_artifact_key: test-results
       sonar_project_key: food2gether_profile-service
-      additional_args: >-
-        -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-        -Dsonar.pullrequest.branch=${{ github.head_ref }}
-        -Dsonar.pullrequest.base=${{ github.base_ref }}
+      # Branch analysis parameters should not be needed for intregated CIs (like GitHub Actions)
     secrets:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
