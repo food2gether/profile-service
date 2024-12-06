@@ -13,6 +13,7 @@ jobs:
     with:
       java_version: '17'
       test_artifact_name: 'quarkus-test-results'
+      run_native: ${{ github.event_name == 'pull_request' }}
   scan:
     needs: test
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
