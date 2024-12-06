@@ -1,9 +1,6 @@
-name: Verify & Test
+name: Verify native build
 
 on:
-  push:
-    branches:
-      - '*'
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -12,14 +9,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-jvm:
-    uses: food2gether/workflows/.github/workflows/backend-test.yaml@main
-    if: ${{ github.event_name == 'push' }}
-    with:
-      java_version: '17'
   test-native:
     uses: food2gether/workflows/.github/workflows/backend-test.yaml@main
-    if: ${{ github.event_name == 'pull_request' }}
     with:
       java_version: '17'
       profile: native
+      test_results_artifact_key: test-results
+  sonar:
+    needs: test-native
+    uses: food2gether/workflows/.github/workflows/backend-scan.yaml@main
+    with:
+      java_version: '17'
+      test_results_artifact_key: test-results
