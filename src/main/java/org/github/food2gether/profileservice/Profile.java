@@ -1,6 +1,5 @@
-package org.foodtogether;
+package org.github.food2gether.profileservice;
 
-import jakarta.inject.Inject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 

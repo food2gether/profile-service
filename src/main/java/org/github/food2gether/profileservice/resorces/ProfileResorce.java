@@ -1,4 +1,4 @@
-package resorces;
+package org.github.food2gether.profileservice.resorces;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
