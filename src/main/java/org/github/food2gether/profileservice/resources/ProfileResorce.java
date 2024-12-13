@@ -1,10 +1,8 @@
-package org.github.food2gether.profileservice.resorces;
+package org.github.food2gether.profileservice.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.Map;
 
 @Path("/api/v1/profiles")
 public class ProfileResorce {
