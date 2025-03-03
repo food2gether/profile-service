@@ -2,22 +2,20 @@ package org.github.food2gether.profileservice.service;
 
 import com.github.food2gether.shared.model.Profile;
 import io.netty.util.internal.StringUtil;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import java.util.List;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response.Status;
-import org.github.food2gether.profileservice.reposetory.ProfileReposetory;
+import java.util.List;
+import org.github.food2gether.profileservice.repository.ProfileRepository;
 
+@ApplicationScoped
 public class ProfileServiceImpl implements ProfileService {
 
   @Inject
-  EntityManager entityManager;
-
-  @Inject
-  ProfileReposetory profileReposetory;
+  ProfileRepository profileRepository;
 
   @Override
   public Profile createOrUpdateProfile(Profile.DTO profile) {
@@ -45,9 +43,15 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     Profile result = new Profile();
-    result.setName(profile.getName());
+    result.setName(profile.getName().toLowerCase());
+    result.setPrimaryEmail(profile.getPrimaryEmail());
+    result.setProfilePictureUrl(profile.getProfilePictureUrl());
+    result.setDisplayName(
+        StringUtil.isNullOrEmpty(profile.getDisplayName())
+            ? profile.getName()
+            : profile.getDisplayName());
 
-    this.profileReposetory.persist(result);
+    this.profileRepository.persist(result);
     return result;
   }
 
@@ -59,7 +63,7 @@ public class ProfileServiceImpl implements ProfileService {
       );
     }
 
-    Profile result = this.profileReposetory.findByIdOptional(profile.getId())
+    Profile result = this.profileRepository.findByIdOptional(profile.getId())
         .orElseThrow(() -> new NotFoundException("Profile not found"));
 
     if(StringUtil.isNullOrEmpty(profile.getName())) {
@@ -78,30 +82,42 @@ public class ProfileServiceImpl implements ProfileService {
       result.setDisplayName(profile.getDisplayName());
     }
 
-    this.profileReposetory.persist(result);
+    this.profileRepository.persist(result);
     return result;
   }
 
   @Override
   public Profile getProfile(Long id) {
-    return this.profileReposetory.findByIdOptional(id)
+    return this.profileRepository.findByIdOptional(id)
         .orElseThrow(() -> new NotFoundException("Profile not found"));
   }
 
   @Override
   public List<Profile> getAll(String searchQuery) {
     return searchQuery != null
-        ? this.profileReposetory.listAllForQuery(searchQuery)
-        : this.profileReposetory.listAll();
+        ? this.profileRepository.listAllForQuery(searchQuery)
+        : this.profileRepository.listAll();
   }
 
   @Override
   @Transactional
   public Profile deleteProfile(Long id) {
-    Profile profile = this.profileReposetory.findByIdOptional(id)
+    Profile profile = this.profileRepository.findByIdOptional(id)
         .orElseThrow(() -> new NotFoundException("Profile not found"));
 
-    this.profileReposetory.delete(profile);
+    this.profileRepository.delete(profile);
     return profile;
+  }
+
+  @Override
+  public Profile getProfileByEmail(String primaryEmail) {
+    List<Profile> profiles = this.profileRepository.listByPrimaryEmail(primaryEmail);
+
+    if (profiles.size() > 1)
+      throw new WebApplicationException("Multiple profiles found for primary email " + primaryEmail);
+    if (profiles.isEmpty())
+      throw new NotFoundException("Profile not found");
+
+    return profiles.get(0);
   }
 }

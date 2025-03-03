@@ -1,9 +1,11 @@
-package org.github.food2gether.profileservice.reposetory;
+package org.github.food2gether.profileservice.repository;
 
 import com.github.food2gether.shared.model.ContactInformation;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 
-public class ContactInformationReposetoryImpl implements ContactInformationReposetory {
+@ApplicationScoped
+public class ContactInformationRepositoryImpl implements ContactInformationRepository {
 
   @Override
   public List<ContactInformation> findByProfileId(Long profileId) {

@@ -5,7 +5,7 @@ import com.github.food2gether.shared.model.ContactInformation.DTO;
 import java.util.List;
 
 public interface ContactInformationService {
-  List<ContactInformation> getContactInfo(Long id);
+  List<ContactInformation> getAll(Long id);
 
   List<ContactInformation> createOrUpdate(Long id, List<DTO> contactInfoDtos);
 }

@@ -12,4 +12,6 @@ public interface ProfileService {
   List<Profile> getAll(String searchQuery);
 
   Profile deleteProfile(Long id);
+
+  Profile getProfileByEmail(String primaryEmail);
 }

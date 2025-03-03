@@ -4,53 +4,56 @@ import com.github.food2gether.shared.model.ContactInformation;
 import com.github.food2gether.shared.model.ContactInformation.DTO;
 import com.github.food2gether.shared.model.Profile;
 import io.netty.util.internal.StringUtil;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response.Status;
-import org.github.food2gether.profileservice.reposetory.ContactInformationReposetory;
-import org.github.food2gether.profileservice.reposetory.ProfileReposetory;
 import java.util.List;
+import org.github.food2gether.profileservice.repository.ContactInformationRepository;
+import org.github.food2gether.profileservice.repository.ProfileRepository;
 
+@ApplicationScoped
 public class ContactInformationServiceImpl implements ContactInformationService {
 
   @Inject
-  ContactInformationReposetory contactInfoReposetory;
+  ContactInformationRepository contactInfoRepository;
 
   @Inject
-  ProfileReposetory profileReposetory;
+  ProfileRepository profileRepository;
 
   @Inject
   EntityManager entityManager;
 
   @Override
-  public List<ContactInformation> getContactInfo(Long id) {
-    if(this.contactInfoReposetory.findByIdOptional(id).isEmpty()) {
+  public List<ContactInformation> getAll(Long id) {
+    if (this.profileRepository.findByIdOptional(id).isEmpty()) {
       throw new NotFoundException("Contact not found");
     }
-      return this.contactInfoReposetory.findByProfileId(id);
+
+    return this.contactInfoRepository.findByProfileId(id);
   }
 
   @Override
   @Transactional
   public List<ContactInformation> createOrUpdate(Long id, List<DTO> contactInfoDtos) {
-    Profile profile = this.profileReposetory.findByIdOptional(id)
+    Profile profile = this.profileRepository.findByIdOptional(id)
         .orElseThrow(() -> new NotFoundException("Profile not found"));
 
     List<ContactInformation> contactInfos = contactInfoDtos.stream()
-        .map( contactDTO ->
+        .map(contactDTO ->
             contactDTO.getId() == null
-              ? this.createContactInfo(contactDTO, id)
-              : this.updateContactInfo(contactDTO))
+                ? this.createContactInfo(contactDTO, id)
+                : this.updateContactInfo(contactDTO))
         .toList();
 
     List<ContactInformation> updatedContactInfos = profile.getContactInformation();
     updatedContactInfos.clear();
     updatedContactInfos.addAll(contactInfos);
 
-    this.profileReposetory.persist(profile);
+    this.profileRepository.persist(profile);
     return contactInfos;
   }
 
@@ -62,7 +65,8 @@ public class ContactInformationServiceImpl implements ContactInformationService 
       );
     }
 
-    ContactInformation contactInformation = this.contactInfoReposetory.findByIdOptional(contactDTO.getId())
+    ContactInformation contactInformation = this.contactInfoRepository.findByIdOptional(
+            contactDTO.getId())
         .orElseThrow(() -> new NotFoundException("Contact Information not found"));
 
     if (StringUtil.isNullOrEmpty(contactDTO.getType())) {
@@ -73,7 +77,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
       contactInformation.setValue(contactDTO.getValue());
     }
 
-    this.contactInfoReposetory.persist(contactInformation);
+    this.contactInfoRepository.persist(contactInformation);
     return contactInformation;
   }
 
